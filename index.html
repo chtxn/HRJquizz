@@ -10,6 +10,23 @@
     />
 
     <style>
+      .fade {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+      #qNumber {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: pink;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
                           body {
                             font-size: 25px;
                           }
@@ -105,10 +122,16 @@
 
       <div id="quiz" class="hidden">
         <h2 id="question"></h2>
+        <div id="qNumber"></div>
         <div class="progress">
           <div id="progressBar"></div>
         </div>
         <div id="choices"></div>
+        
+<div style="margin-top:15px;">
+  <button onclick="prevQ()">ย้อนกลับ</button>
+  <button onclick="nextQ()">ถัดไป</button>
+</div>
       </div>
       <div id="result" class="hidden">
         <h2>🎉 และเด็กเล็กที่จะมาธุจ้าคุณคือ...</h2>
@@ -185,21 +208,24 @@
       const quizData = [
         {
           q: "เด็กแบบไหนที่คุณเห็นแล้วใจละลายที่สุด?",
-          c: ["A. เด็กเรียบร้อย", "B. เด็กซน", "C. เด็กขี้อาย", "D. เด็กเท่"],
-        },
+  c: [ "A. ยกมือไหว้สวย พูดเพราะสุด ๆ",
+    "B. วิ่งมาชนแล้วบอก 'ขอโทษน้าาา' แต่ยังซนต่อ",
+    "C. หลบหลังแม่ แอบมองคุณเงียบ ๆ",
+    "D. ใส่แว่น ใส่หมวก ยืนเฉย ๆ ก็เท่แล้ว",
+  ],
+},
         {
           q: "อยากให้ที่บ้านมีเด็กเล็กแบบไหน?",
-          c: [
-            "A. ยายจ๊ะยายจ๋า",
-            "B. หนูขอกิมไอกะติมฉิบบาท",
-            "C. เมื่อครู่ หนูเท่ห์หรือม่ายยย",
-            "D. แค่ใส่แว่น หนูก็จาเท่ห์ตลอด 323 ชั่วโมง เพราะเท่ห์เกิน",
-          ],
+          c: [ "A. ยายจ๋าาา หนูรักยายที่สุดเลย 💗",
+    "B. หนูขอกิมไอกะติมฉิบบาท ได้มั้ยจ๊ะ😆",
+    "C. นั่งเงียบ ๆ เล่นคนเดียว โลกส่วนตัวสูง เพราะอยากสูงขึ้น 🥺",
+    "D. แค่ใส่แว่น หนูก็เท่ 323 ชั่วโมง 😎",
+  ],
         },
         {
           q: "อยากเล่นกับเด็กแบบไหน?",
           c: [
-            "A. พูดเพราะ ๆ พพิ้คนสวยจ๋ามาเล่นกับหนูจ้าา ",
+            "A. พูดเพราะ ๆ พิ้คนสวยจ๋ามาเล่นกับหนูจ้าา ",
             "B. ถึงจาหล่อก่าใครในโลกนี้ พี่ก็จาบอกทุกคนว่ามูมินมีปาก",
             "C. ขอเงียบก่อนเมื่อกี้ยายจ๋าบอกว่า หนูจาปวดปาก ",
             "D. คนอย่างพิ้ ให้ยืนฌแย ๆ ก็จาหล่อมาด ๆ อีกอะ",
@@ -215,12 +241,16 @@
           ],
         },
         {
-          q: "อยากถ่ายรูปกับเด็กเล็กแบบไหน?",
-          c: ["A. น่ารัก", "B. ตลก", "C. เขิน", "D. หล่อ"],
+          q: "ถ้าอยู่ด้วยทั้งวัน...",
+    c: [
+      "A. คุยกันหวาน ๆ แต่คุยกับยาย",
+      "B. วิ่งเล่นทั้งวัน แต่ไม่เล่นกับแม่",
+      "C. อยู่เงียบ ๆ เล่นคนเดียวไม่เอาแม่",
+      "D. ถ่ายรูปคูล ๆ แต่ชูสองนิ้ว",
         },
         {
           q: "เรียกคุณแบบไหน?",
-          c: ["A. สุภาพ", "B. เสียงดัง", "C. เบา", "D. มั่นใจ"],
+          c: ["A. อาม่าจ๋า", "B. ป้าจ๋า", "C. พิ้คนสวยย", "D. แมะ"],
         },
         {
           q: "อยากให้เด็กแบบไหนมาขอพร?",
@@ -233,15 +263,15 @@
         },
         {
           q: "งอแงแบบไหนเอ็นดู?",
-          c: ["A. น่ารัก", "B. ฮา", "C. หลบหน้า", "D. คูล"],
+          c: ["A. ก็หนูบอกว่ามูมินมีปากยังไงล่ะ ", "B. ถ้ามูมินไม่มีปากจากิมข้าวดั้ยงัย", "C. อินจอลมี มั่ยจั่ยหมูอวกาศ", "D. มูมินกะมั่ยจั่ยฮิปโปนะ มูมินคือโทรลส์ต่างหากล่ะ"],
         },
         {
           q: "อยากเล่นน้ำกับแบบไหน?",
-          c: ["A. สุภาพ", "B. มันส์", "C. เงียบ", "D. เท่"],
+          c: ["A. พาเด็กเล็กไปทั่วหมู่บ้าน", "B. พาเด็กเล็กไปเล่นน้ำที่วัด", "C. พาเด็ฏเล็กขึ้นท้ายกระบะ", "D. พาเด็กเล็กไปทะเล"],
         },
         {
           q: "กอดแบบไหน?",
-          c: ["A. อบอุ่น", "B. หัวเราะ", "C. เขิน", "D. มั่นใจ"],
+          c: ["A. กอดเด็กใส่สูท", "B. กอดเด็กขี่ซ้าง", "C. กอดเดผ้กแฟชึ่นนน", "D.กอดเด็กอยากสูง"],
         },
         {
           q: "อยากเลี้ยงขนมแบบไหน?",
@@ -258,61 +288,112 @@
         },
         {
           q: "เล่นทั้งวันแบบไหน?",
-          c: ["A. คุย", "B. วิ่ง", "C. เงียบ", "D. ถ่ายรูป"],
+          c: ["A. เล่นทุกอย่างจนกว่าจะหมดพลัง หมายถึงคนเล่นด้วยนะไม่ใช่เด็ก", "B. บอกว่าถ้าอยากให้เล่นก็ร้องไห้ก่อน", "C. คิด คิดทุกวินาทีว่าต้องเล่นยังไงเด็กมานจาอ้อน ", "D. ถ่ายรูปขอสองนิ้วทั้งวันอะ ขออีก เอาอีก 2นิ้วมา"],
         },
         {
-          q: "แพ้ทางแบบไหน?",
-          c: ["A. เรียบร้อย", "B. ขี้เล่น", "C. ขี้อาย", "D. หล่อ"],
-        },
-        { q: "เด็กในฝัน?", c: ["A. อบอุ่น", "B. สดใส", "C. ขี้อาย", "D. เท่"] },
-      ];
+          q: "ถ้าเด็กขอเงินวันสงกรานต์",
+    c: [
+      "A. ขอแบบดี ๆ พูดจ๊ะจ๋า เดี๋ยวป้าให้เอง 20 ",
+      "B. ขอแล้ว หมดแล้ว ขออีก หมดอีก ขอต่อ ",
+      "C. พูดด้วยฟามมั่นจัยว่า ขอ1ใบเขว",
+      "D. อยากกินไรบอก ป้าจ่ายให้เอง ",
+    ],
+          q: "เด็กแบบไหนที่จะมาไหว้คุณปีนี้",
+    c: [
+      "A. น่ารักติดคุณ",
+      "B. ซนกวนไม่หยุด",
+      "C. ขี้อายเงียบ ๆ",
+      "D. เท่มีออร่า",
+    ],
+  },
+];
 
       let current = 0;
-      let score = [0, 0, 0, 0];
+let score = [0, 0, 0, 0];
+let selected = null;
 
-      function startQuiz() {
-        document.getElementById("start").classList.add("hidden");
-        document.getElementById("quiz").classList.remove("hidden");
-        loadQ();
-      }
+function startQuiz() {
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  loadQ();
+}
 
-      function loadQ() {
-        const q = quizData[current];
-        document.getElementById("question").innerText = q.q;
-        let percent = ((current + 1) / quizData.length) * 100;
-        document.getElementById("progressBar").style.width = percent + "%";
-        const box = document.getElementById("choices");
-        box.innerHTML = "";
+function loadQ() {
+  const q = quizData[current];
 
-        q.c.forEach((choice, i) => {
-          const div = document.createElement("div");
-          div.className = "choice";
-          div.innerText = choice;
-          div.onclick = () => {
-            score[i]++;
-            current++;
-            if (current < quizData.length) {
-              loadQ();
-            } else {
-              showResult();
-            }
-          };
-          box.appendChild(div);
-        });
-      }
+  document.getElementById("quiz").classList.remove("fade");
+  void document.getElementById("quiz").offsetWidth;
+  document.getElementById("quiz").classList.add("fade");
 
-      function showResult() {
-        document.getElementById("quiz").classList.add("hidden");
-        document.getElementById("result").classList.remove("hidden");
+  document.getElementById("question").innerText = q.q;
 
-        let maxIndex = score.indexOf(Math.max(...score));
+  // เลขข้อ
+  document.getElementById("qNumber").innerText =
+    (current + 1) + "/" + quizData.length;
 
-        const resultIndex = maxIndex * 3 + Math.floor(Math.random() * 3);
+  // progress bar
+  let percent = ((current + 1) / quizData.length) * 100;
+  document.getElementById("progressBar").style.width = percent + "%";
 
-        const res = results[resultIndex];
-        document.getElementById("resultImg").src = res.img;
-        document.getElementById("resultText").innerText = res.text;
-      }
-    </script>
+  const box = document.getElementById("choices");
+  box.innerHTML = "";
+  selected = null;
+
+  q.c.forEach((choice, i) => {
+    const div = document.createElement("div");
+    div.className = "choice";
+    div.innerText = choice;
+
+    div.onclick = () => {
+      selected = i;
+
+      document.querySelectorAll(".choice").forEach(el => el.style.background = "#e5faff");
+      div.style.background = "#ffcce5";
+    };
+
+    box.appendChild(div);
+  });
+}
+
+function nextQ() {
+  if (selected === null) {
+    alert("เลือกคำตอบก่อนน้าา");
+    return;
+  }
+
+  score[selected]++;
+  current++;
+
+  if (current < quizData.length) {
+    loadQ();
+  } else {
+    showResult();
+  }
+}
+
+function prevQ() {
+  if (current > 0) {
+    current--;
+    loadQ();
+  }
+}
+
+function showResult() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+
+  let maxIndex = score.indexOf(Math.max(...score));
+
+  const groupSize = Math.floor(results.length / 4);
+  const start = maxIndex * groupSize;
+  const end = start + groupSize;
+
+  const resultIndex = Math.floor(Math.random() * (end - start)) + start;
+
+  const res = results[resultIndex];
+  document.getElementById("resultImg").src = res.img;
+  document.getElementById("resultText").innerText = res.text;
+}
+</script>
   </body>
 </html>
