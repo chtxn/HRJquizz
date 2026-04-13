@@ -5,7 +5,7 @@
     <title>สงกรานต์นี้ใครจะมาธุจ้าคุณ</title>
 
     <link
-      href="https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;600&display=swap"
+     <link href="https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500;600;700&display=swap" rel="stylesheet">
       rel="stylesheet"
     />
 
@@ -38,14 +38,17 @@
 
                   h2 {
               font-size: 26px;
+              font-weight: 500;
             }
 
             .choice {
-                            font-size: 22px;
+              font-size: 22px;
+              font-weight: 400;
                           }
 
                           button {
         font-size: 20px;
+        font-weight: 500;
         padding: 12px 24px;
         border-radius: 30px;
       }
@@ -94,10 +97,14 @@
         border-radius: 20px;
         cursor: pointer;
       }
+      .choice.selected {
+  background: #ffe066; 
+  color: #333;
+}
 
-      .choice:hover {
-        background: #d3d3d3;
-      }
+      .choice.selected:hover {
+  background: #ffe066;
+}
 
       img {
         max-width: 100%;
