@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <title>สงกรานต์นี้ใครจะมาธุจ้าคุณ</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+                  body {
+                    font-size: 18px;
+                  }
+
+                  h1 {
+                    font-size: 25px;
+                  }
+
+                  h2 {
+                    font-size: 20px;
+                  }
+
+                  .choice {
+                    font-size: 18px;
+                  }
+
+                  button {
+                    font-size: 18px;
+                  }
+                  body {
+                    font-family: "Fahkwang", sans-serif;
+                    margin: 0;
+                    background: linear-gradient(135deg, #fffccd);
+                    text-align: center;
+                    body {
+                      letter-spacing: 2.3px;
+                    display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+            }
+
+                  .container {
+        max-width: 750px;
+        width: 100%;
+      }
+                  #start,
+                  #quiz,
+                  #result {
+                    background: rgb(255, 218, 241);
+                    border-radius: 25px;
+                    padding: 30px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                  }
+
+                  button {
+                    padding: 12px 30px;
+                    border: none;
+                    border-radius: 50px;
+                    background: linear-gradient(135deg, #ffffff);
+                    color: rgb(255, 163, 252);
+                    cursor: pointer;
+                  }
+
+                  .choice {
+                    background: #e5faff;
+                    padding: 15px;
+                    margin: 10px 0;
+                    border-radius: 20px;
+                    cursor: pointer;
+                  }
+
+                  .choice:hover {
+                    background: #d3d3d3;
+                  }
+
+                  img {
+                    max-width: 100%;
+                    border-radius: 20px;
+                  }
+
+                  .hidden {
+                    display: none;
+                  }
+                  #result {
+                    animation: fadeIn 3s ease;
+                  }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="start">
+        <h1>สงกรานต์นี้ใครจะมาธุจ้าคุณ 💖</h1>
+        <button onclick="startQuiz()">เริ่มเล่น</button>
+      </div>
+
+      <div id="quiz" class="hidden">
+        <h2 id="question"></h2>
+        <div class="progress">
+          <div id="progressBar"></div>
+        </div>
+        <div id="choices"></div>
+      </div>
+      <div id="result" class="hidden">
+        <h2>🎉 และเด็กเล็กที่จะมาธุจ้าคุณคือ...</h2>
+        <img id="resultImg" />
+        <p id="resultText"></p>
+        <button onclick="location.reload()">เล่นใหม่</button>
+      </div>
+    </div>
+
+    <script>
+      const results = [
+        {
+          img: "https://lh3.googleusercontent.com/d/1dr1Ivz1EMaJirdZbr-mUUVBdl0m0SC03",
+          text: "เด็กเล็กคิ้วท์ขั้นสุด 🧸💗\nมาธุจ้าแบบตาแป๋ว น่ารักจนใจละลาย เป็นเด็กที่คุณแพ้ทางแน่นอน เพราะธุจ้าเสร็จ เด็กเล็กก็จะบอกรักยายจ๋า ทันที น้องรักยายจ๋า ยายจ๋าฉะบายดีมั้ยจ๊ะ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1Ckhnb5pFHu9uJx_f7lGGqIdL8BFP3-vX",
+          text: "เด็กเล็กขี้เล่นแอบกวน 😏\nธุจ้าเสร็จ = แอบแกล้งคุณเบา ๆ น่ารักแบบกวน ๆ ยิ่งมองยิ่งเอ็นดู แต่ก็จะแล้งกลับเหมือนกันเรื่องอะไรป้าต้องยอม",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/11g9T3lvpgeb_xdnvNIQOdSIrjkFuXqW9",
+          text: "เด็กเล็กขี้แกล้งตัวเบบี๋ อยากจะโตแต่แกล้งไม่หยุด 😜\nธุจ้าเสร็จ จะแกล้งทันที แต่คุณก็ยังเอ็นดูเขาอยู่ดี เพราะเด็กแบบนี้น่ามันเขี้ยวที่สุบ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1tvUYW0MFRK00Fe03cjmSkb2wGZsDCJPa",
+          text: "เด็กล็กยิ้มหวาน เพราะยิ้มอย่างเดียว ใครจะทำอะไร นู๋ก็จายิ้มไว้ เพื่อแบงค์เขว 🫶\nธุจ้าเสร็จจาถามทันทีว่า นู๋ได้แบงค์เขวม้ายย ให้กี่แบงค์เขว แต่แม่ต๋าให้หนุเก็บได้ไม่เกิน 2 ใบน้าา",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1G4n6nI6ENT5970R_E58K7P7S8iy1C1Q6",
+          text: "เด็กอบอุ่น 🫶\nธุจ้าแบบสุภาพ น่ารักแบบโตขึ้นแล้ว ฟีลเหมือนเด็กที่ดูแลคุณได้ ถึงจะแค่10 ขวบ 110 เซน ก็ตาม เป็นพี่คนโตแยะ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1Ty4v1Bj9qJH42Yrf5ZpYAumnkgbYBD0B",
+          text: "เด็กเล็กสดใส ยิ้มจ้าา โชว์ฟันเข้วที่ภูมิใจ☀️\nธุจ้าไปยิ้มไป พลังบวกเต็มร้อย อยู่ด้วยแล้วมีความสุข ถ้าป้ายถ่าย 323 รูป หนูจาชู 2 นิ้วไป 323 รูปเลยนะ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1A83D7k6svZC46oWDI_swvmA_T_kUUet4",
+          text: "เด็กเล็กงอแงนิด ๆ 😭\nไหว้ไปงอแงไป เพราะป้าบอกจาให้แบงค์เขว 5 ใบ แต่ป้าให้แค่แบงค์แดง 2 ใบ หนูว่ามานยังไม่เยอะเท่า แบงค์เขว 5 ใบ แต่ยิ่งงอแงยิ่งน่ารัก",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/116xTpHX-uQdZEh5sSUEV42JVZDwuHJ_-",
+          text: "เด็กเล็กแฟชั่น สงกรานต์นี้คือรันเวย์ของพี่จ๋า 🔥\nธุจ้าแบบมีสไตล์ ไม่ใส่แว่น ไม่ออกจาบ้าน ตัวเล็กแต่ความปังระดับ 323 แค่ใส่แว่นใส่หมวก ก็ได้แบงค์เขว",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1A-To6oOjIMH9W3WeB4WAbCmYIPnJfmE2",
+          text: "เด็กเล็กค่สเท่ มีออร่า ถึงจะไม่ถูกใจ ถึงจะงอน ถึงจะไม่ชอบ แต่ก็หล่อ 😎\nธุจ้าแบบคูล ๆ ไม่ต้องพยายามก็หล่อ เพราะพิ้นั้นหล่อโดยกำเนิด สูทแดงที่ว่าแรง ยังไม่แพงเท่าความหล่อของพิ เด็กเล็กคนนี้ = หัวใจคุณสั่น เพราะอดไม่ได้ที่จะแกล้ง",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/10OZ62yA9pLjTaz895-X5SiDNeSEY7HyT",
+          text: "เด็กเล็กขี้อาย น่าเอ็นดู ติดงอแง🥺\nธุจ้าแบบเขิน ๆ ก้มหน้าเบา ๆ ตะโกนร้องเรียกแม่เพราะต้องไหว้ตั้งแต่ปากซอย จนท้ายซอย แต่ได้แค่แบงค์ม่วงใบเดียว เพราะอยากได้แบงค์เขว 10 ใบ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1kunVJVEWR1Y6iq590A7E9aHM0tiYSL48",
+          text: "เด็กเล็กเรียบร้อย เพอร์เฟกต์ ไม่ครบเซ็ต ไม่ออกจากบ้าน เพราะพิ่จาเท่ไม่เท่า ลูกป้าหน่อย 🎀\nธุจ้าสวย พูดเพราะ เป็นเด็กที่ผู้ใหญ่รักมาก เพราะปากนิดจมูกหน่อย ตุวเท่ามด ชุดเท่าแมลงวัน แต่น่ารักมาก หลานป้า มาเอา 20",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1VojPsDO3qqsnuRR8BzOpUbxA5QvMcv23",
+          text: "เด็กเล็กเงียบ ๆ โลกส่วนตัวสูง😶\nถึงโลกส่วนตัวสูง แต่หนุพร้อมเท้าเอววีน หน้าตาเด็กดี แต่จาวีนยาย ๆ นะ ทำไมยังไม่ให้หารปลาของหนูอีก แต่หนูกะธุจ้าแบบเรียบร้อย ไม่พูดเยอะ เพราะยายจ๋าเอาขนมไดนอเสาร์มาให้เป็นกะลัง",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1Z2bbja8H3IXnl9WylWNWPLEvsFvDw_2V",
+          text: "เด็กกิมก่อน ค่อยธุจ้า 🍭\nธุจ้าเพื่อ…ขนมล้วน ๆ 😂 หนูธุจ้าทุกคนนะจ๊ะ แต่ทุกคนมีพี่หนมมาฝากหนูเย้อ ๆ เลย หนูกลัวพิ่เฉียใจเยยต้องกิมพิ่ ๆ ทุกถุง เพราะความน่ารักคือเต็มสิบ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1yOBUwg1a3hf-KbnsmYGPSsrnrMwCkbQE",
+          text: "เด็กเล็กติดเล่น ติดซน สนุกสุด 🐘💦\nมาธุจ้าแล้วชวนไปเล่นต่อ พลังล้น เล่นได้ทั้งวัน วันนิ ยายจ๋า ป้าจ๋า พาหนูขี้ซ้างนึยางน่ะ หนุจาขึ้นพิ้ซ้างซึฉองนิ้ว แม่จ๋าแชะ ๆ เย้อ ๆ เยยนะจ๊ะ",
+        },
+        {
+          img: "https://lh3.googleusercontent.com/d/1K9BjYGLFio3-Ufjm_zkzLcm1DDIIaaOE",
+          text: "เด็กเล็กอ้อนเก่ง 🍼\nธุจ้าง่ายมาก ๆ ไม่เคยบ่นสักคำ เพราะจุ๊บจุกหลอกอยู่ และที่ธุจ้าง่ายคือยายจ๋าจับมือทำ ธุจ้าเสร็จ = ขออุ้มเลย ติดคุณแจ ไม่ยอมไปไหน",
+        },
+      ];
+
+      const quizData = [
+        {
+          q: "เด็กแบบไหนที่คุณเห็นแล้วใจละลายที่สุด?",
+          c: ["A. เด็กเรียบร้อย", "B. เด็กซน", "C. เด็กขี้อาย", "D. เด็กเท่"],
+        },
+        {
+          q: "อยากให้ที่บ้านมีเด็กเล็กแบบไหน?",
+          c: [
+            "A. ยายจ๊ะยายจ๋า",
+            "B. หนูขอกิมไอกะติมฉิบบาท",
+            "C. เมื่อครู่ หนูเท่ห์หรือม่ายยย",
+            "D. แค่ใส่แว่น หนูก็จาเท่ห์ตลอด 323 ชั่วโมง เพราะเท่ห์เกิน",
+          ],
+        },
+        {
+          q: "อยากเล่นกับเด็กแบบไหน?",
+          c: [
+            "A. พูดเพราะ ๆ พพิ้คนสวยจ๋ามาเล่นกับหนูจ้าา ",
+            "B. ถึงจาหล่อก่าใครในโลกนี้ พี่ก็จาบอกทุกคนว่ามูมินมีปาก",
+            "C. ขอเงียบก่อนเมื่อกี้ยายจ๋าบอกว่า หนูจาปวดปาก ",
+            "D. คนอย่างพิ้ ให้ยืนฌแย ๆ ก็จาหล่อมาด ๆ อีกอะ",
+          ],
+        },
+        {
+          q: "ชอบเด็กเล็กเล่นน้ำแบบไหน?",
+          c: [
+            "A. เปาะแปะ ๆ ไม่อยากเปียกมาก แม่จ๋าซักผ้าเหน่ย ๆ นะ ",
+            "B. สาดสุด เพราะนี่คือการอาบน้ำของหนู",
+            "C. เบา ๆ น้าาาา ไม่สาดหนุแรงน้าาา ",
+            "D. คนที่จะสาดพิ้ได้ ต้องเป็นหล่อและมีกะไตลืเป็นของจะของ",
+          ],
+        },
+        {
+          q: "อยากถ่ายรูปกับเด็กเล็กแบบไหน?",
+          c: ["A. น่ารัก", "B. ตลก", "C. เขิน", "D. หล่อ"],
+        },
+        {
+          q: "เรียกคุณแบบไหน?",
+          c: ["A. สุภาพ", "B. เสียงดัง", "C. เบา", "D. มั่นใจ"],
+        },
+        {
+          q: "อยากให้เด็กแบบไหนมาขอพร?",
+          c: [
+            "A. เด็กดี หนูเป็นเด็กดี",
+            "B. เล่นกับหนุก่อนแล้วหนูจาขอพรนะ",
+            "C. หนูขอแบ้งเขว 5 ใบเพื่อเพิ่มความมั่นใจได้มั้ยจ๊ะ",
+            "D. เหน่ยที่หล่อไปวัน ๆ พิ้หล่อขนาดนี้แม่จ๋าต้องทำใจไว้บ้าง",
+          ],
+        },
+        {
+          q: "งอแงแบบไหนเอ็นดู?",
+          c: ["A. น่ารัก", "B. ฮา", "C. หลบหน้า", "D. คูล"],
+        },
+        {
+          q: "อยากเล่นน้ำกับแบบไหน?",
+          c: ["A. สุภาพ", "B. มันส์", "C. เงียบ", "D. เท่"],
+        },
+        {
+          q: "กอดแบบไหน?",
+          c: ["A. อบอุ่น", "B. หัวเราะ", "C. เขิน", "D. มั่นใจ"],
+        },
+        {
+          q: "อยากเลี้ยงขนมแบบไหน?",
+          c: [
+            "A. เหมา ๆ ถุงเท่าบ้าน ",
+            "B. เลี้ยงทุกอย่างที่มองก่อน ",
+            "C. ปากบอกไม้แต่หยิบใส่ตระกร้าให้หลาน ",
+            "D. หยิบมาก่อน เพราะหลานกินทุกถุง",
+          ],
+        },
+        {
+          q: "อยากอยู่ใกล้แบบไหน?",
+          c: ["A. อ่อนโยน", "B. สนุก", "C. สงบ", "D. มีสไตล์"],
+        },
+        {
+          q: "เล่นทั้งวันแบบไหน?",
+          c: ["A. คุย", "B. วิ่ง", "C. เงียบ", "D. ถ่ายรูป"],
+        },
+        {
+          q: "แพ้ทางแบบไหน?",
+          c: ["A. เรียบร้อย", "B. ขี้เล่น", "C. ขี้อาย", "D. หล่อ"],
+        },
+        { q: "เด็กในฝัน?", c: ["A. อบอุ่น", "B. สดใส", "C. ขี้อาย", "D. เท่"] },
+      ];
+
+      let current = 0;
+      let score = [0, 0, 0, 0];
+
+      function startQuiz() {
+        document.getElementById("start").classList.add("hidden");
+        document.getElementById("quiz").classList.remove("hidden");
+        loadQ();
+      }
+
+      function loadQ() {
+        const q = quizData[current];
+        document.getElementById("question").innerText = q.q;
+        let percent = ((current + 1) / quizData.length) * 100;
+        document.getElementById("progressBar").style.width = percent + "%";
+        const box = document.getElementById("choices");
+        box.innerHTML = "";
+
+        q.c.forEach((choice, i) => {
+          const div = document.createElement("div");
+          div.className = "choice";
+          div.innerText = choice;
+          div.onclick = () => {
+            score[i]++;
+            current++;
+            if (current < quizData.length) {
+              loadQ();
+            } else {
+              showResult();
+            }
+          };
+          box.appendChild(div);
+        });
+      }
+
+      function showResult() {
+        document.getElementById("quiz").classList.add("hidden");
+        document.getElementById("result").classList.remove("hidden");
+
+        let maxIndex = score.indexOf(Math.max(...score));
+
+        const resultIndex = maxIndex * 3 + Math.floor(Math.random() * 3);
+
+        const res = results[resultIndex];
+        document.getElementById("resultImg").src = res.img;
+        document.getElementById("resultText").innerText = res.text;
+      }
+    </script>
+  </body>
+</html>
